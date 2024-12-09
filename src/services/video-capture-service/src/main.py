@@ -1,11 +1,13 @@
 from camera_capture import CameraCapture
 from folder_capture import FolderCapture
 import keyboard
+import os
 
 class CaptureService:
     def __init__(self):
+        # e:\korayzma\images\saved\defects
         settings = {
-            "source_folder": f"e:\korayzma\images\saved\defects"
+            "source_folder": os.getenv("SOURCE_FOLDER")
         }
         
         self.capture = FolderCapture(settings)
