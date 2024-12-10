@@ -1,8 +1,6 @@
 version: "3.9"
 
 networks:
-  private_network:
-    driver: bridge
   public_network:
     driver: bridge
 
@@ -19,14 +17,15 @@ services:
     depends_on:
       - rabbitmq
     networks:
-      - private_network  # Приватная сеть для взаимодействия с RabbitMQ
+      - public_network
+        
     restart: unless-stopped
 
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq_container
     ports:
-     #- "5672:5672"
+     - "5672:5672"
      - "15672:15672"
     environment:
       RABBITMQ_DEFAULT_USER: guest
@@ -37,6 +36,6 @@ services:
       timeout: 5s
       retries: 3
     networks:
-      - private_network  # Приватная сеть для связи с сервисом
       - public_network   # Публичная сеть для доступа к веб-интерфейсу
+        
     restart: unless-stopped
