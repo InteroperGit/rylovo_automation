@@ -21,6 +21,20 @@ services:
         
     restart: unless-stopped
 
+  image-logging-service:
+      build:
+        context: ../../../../src/services/image-logging-service
+        dockerfile: Dockerfile
+      container_name: image-logging-service
+      env_file:
+        - ../../../../src/services/image-logging-service/.env
+      depends_on:
+        - rabbitmq
+      networks:
+        - public_network
+
+      restart: unless-stopped
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq_container
