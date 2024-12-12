@@ -9,6 +9,8 @@ import signal
 import sys
 import time
 
+SLEEP_INTERVAL = 5
+
 class CaptureService:
     def __init_capture(self):
         try:
@@ -26,7 +28,7 @@ class CaptureService:
     
     def __init_rabbitmq(self):
         attempts = 0
-        max_attempts = 10  # Максимальное количество попыток подключения
+        max_attempts = int(os.getenv("RABBITMQ_MAX_CONNECTION_ATTEMPTS"))  # Максимальное количество попыток подключения
         
         try:
             user = os.getenv("RABBITMQ_USER")
@@ -45,7 +47,7 @@ class CaptureService:
                     break
                 except pika.exceptions.AMQPConnectionError as e:
                     print(f"RabbitMQ. Failed to connect. Attempt: {attempts + 1}/{max_attempts}: {e}")
-                    time.sleep(5)  # Задержка перед повторной попыткой
+                    time.sleep(SLEEP_INTERVAL)  # Задержка перед повторной попыткой
                     attempts += 1
                     
             if self._connection is None:
