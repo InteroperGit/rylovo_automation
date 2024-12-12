@@ -35,7 +35,7 @@ class CaptureService:
             password = os.getenv("RABBITMQ_PASSWORD")
             credentials = pika.PlainCredentials(user, password)
             rabbitmq_host = os.getenv("RABBITMQ_HOST")
-            self._QUEUE_NAME = os.getenv("RABBITMQ_QUEUE_NAME")
+            self._EXCHANGE_NAME = os.getenv("RABBITMQ_EXCHNAGE_NAME")
             # Инициализация подключения
             print(f"Try to connect to RabbitMQ server: {rabbitmq_host} with credentials: {user}:{password}")
             
@@ -54,8 +54,8 @@ class CaptureService:
                 raise Exception(f"Failed to connect to RabbitMQ after {max_attempts} attempts.")
                 
             self._channel = self._connection.channel()
-            self._channel.queue_declare(queue=self._QUEUE_NAME, durable=True)
-            print(f"RabbitMQ. Open queue: [{self._QUEUE_NAME}]")
+            self._channel.exchange_declare(exchange=self._EXCHANGE_NAME, exchange_type='fanout')
+            print(f"RabbitMQ. Open exchange: [{self._EXCHANGE_NAME}]")
 
             return True
         except Exception as e:
@@ -80,8 +80,8 @@ class CaptureService:
         }
         
         self._channel.basic_publish(
-            exchange='',
-            routing_key=self._QUEUE_NAME,
+            exchange=self._EXCHANGE_NAME,
+            routing_key="",
             body=json.dumps(message),
             properties=pika.BasicProperties(
                 delivery_mode=2  # Сохранение сообщения на диск
