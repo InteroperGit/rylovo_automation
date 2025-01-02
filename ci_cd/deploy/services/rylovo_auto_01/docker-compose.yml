@@ -18,7 +18,7 @@ services:
       - rabbitmq
     networks:
       - public_network
-        
+
     restart: unless-stopped
 
   image-logging-service:
@@ -51,5 +51,5 @@ services:
       retries: 3
     networks:
       - public_network   # Публичная сеть для доступа к веб-интерфейсу
-        
+
     restart: unless-stopped
