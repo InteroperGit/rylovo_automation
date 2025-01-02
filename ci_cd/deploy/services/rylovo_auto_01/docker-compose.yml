@@ -28,6 +28,8 @@ services:
       container_name: image-logging-service
       env_file:
         - ../../../../src/services/image-logging-service/.env
+      volumes:
+        - /mnt/e/temp/rylovo_automation:/image_root_folder
       depends_on:
         - rabbitmq
       networks:
