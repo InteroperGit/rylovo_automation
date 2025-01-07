@@ -46,5 +46,10 @@ COPY --from=builder /app/dependencies /usr/local/lib/python3.12/site-packages
 # Copy the application code
 COPY src/ .
 
+COPY temp/libs ./libs
+
+# Установить PYTHONPATH
+ENV PYTHONPATH="${PYTHONPATH}:/app/libs"
+
 # Define the default command
 CMD ["python", "main.py"]

@@ -1,5 +1,6 @@
+import init_path
 from env_configurator_reader import EnvConfiguratorReader
-from rabbitmq_client import RabbitMQClient
+from rabbitmq.rabbitmq_client import RabbitMQClient
 from folder_image_saver import FolderImageSaver
 from image_decoder import ImageDecoder
 
