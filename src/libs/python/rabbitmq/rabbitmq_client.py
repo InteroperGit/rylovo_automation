@@ -88,12 +88,12 @@ class RabbitMQClient:
         finally:
             self.__started = False
             
-    def send(self, queue_name, message) -> None:
+    def send(self, exchange_name, message) -> None:
         if self.__channel is None:
             return
         
         self.__channel.basic_publish(
-            exchange=queue_name,
+            exchange=exchange_name,
             routing_key="",
             body=message,
             properties=pika.BasicProperties(
