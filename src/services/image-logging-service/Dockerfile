@@ -49,7 +49,7 @@ COPY src/ .
 COPY temp/libs ./libs
 
 # Установить PYTHONPATH
-ENV PYTHONPATH="${PYTHONPATH}:/app/libs"
+ENV PYTHONPATH="/app/libs"
 
 # Define the default command
 CMD ["python", "main.py"]

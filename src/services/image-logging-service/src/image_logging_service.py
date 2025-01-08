@@ -34,11 +34,10 @@ class ImageLoggingService:
             ch.basic_nack(delivery_tag=method.delivery_tag)
 
     def start(self):
-        print(f"started = [{self._started}]")
-        
         if not self._started:
             try:
-                self.__rabbitmq_client.start(self.__callback)
+                self.__rabbitmq_client.connect()
+                self.__rabbitmq_client.start_consuming(self.__callback)
                 print("VideoLoggingService was successfully started")
             except Exception as ex:
                 print(f"Failed to start VideoLoggingService: [{ex}]")
@@ -47,7 +46,7 @@ class ImageLoggingService:
         if self._started:
             if not self._connection is None:
                 try:
-                    self.__rabbitmq_client.stop()
+                    self.__rabbitmq_client.stop_consuming()
                     print("VideoLoggingService was successfully stopped")
                 except Exception as ex:
                     print(f"Failed to stop VideoLoggingService: [{ex}]")

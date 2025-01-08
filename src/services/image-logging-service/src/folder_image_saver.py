@@ -1,8 +1,5 @@
 import os
-import json
-import base64
 import cv2
-import numpy as np
 from datetime import datetime
 
 class FolderImageSaver:
