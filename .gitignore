@@ -126,3 +126,6 @@ celerybeat-schedule
 
 # Ignore backup files created by editors
 *~
+
+# Temp directory
+temp/
