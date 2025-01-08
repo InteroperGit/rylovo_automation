@@ -1,11 +1,12 @@
 from event import Event
 import time
 import threading
+from typing import Dict
 
 class Capture:
-    def __init__(self, settings=None):
+    def __init__(self, configuration: Dict[str, str] = None):
         self._event = Event()
-        self._settings = settings
+        self._configuration = configuration
         self.__starting = False
         self.__thread = None
     

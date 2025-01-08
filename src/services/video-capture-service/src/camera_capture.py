@@ -1,4 +1,5 @@
 from capture import Capture
+from typing import Dict
 
 class CameraCapture(Capture):
     """
@@ -21,8 +22,8 @@ class CameraCapture(Capture):
             Stops the capture process and waits for the thread to finish.
     """
     
-    def __init__(self, settings=None):
-        super().__init__(settings)
+    def __init__(self, configuration: Dict[str, str] = None):
+        super().__init__(configuration)
 
     def _handle_capture(self):
         print("Capture from camera")
