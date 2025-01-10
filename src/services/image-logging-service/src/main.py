@@ -1,7 +1,7 @@
 import sys
 import signal
 import time
-from image_logging_service import ImageLoggingService
+from app_container import ApplicationContainer
 
 def signal_handler(framse, sig):
     print("Получен сигнал остановки. Завершаем работу...")
@@ -10,7 +10,8 @@ def signal_handler(framse, sig):
 
 if __name__ == "__main__":
     try:
-        service = ImageLoggingService()
+        container = ApplicationContainer()
+        service = container.image_logging_service()
     except Exception as e:
         print(f"Image logging service. Error: {e}")
         exit(1)

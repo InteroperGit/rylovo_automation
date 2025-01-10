@@ -1,19 +1,44 @@
-import init_path
-from env_configurator_reader import EnvConfiguratorReader
-from rabbitmq.rabbitmq_client import RabbitMQClient
-from folder_image_saver import FolderImageSaver
-from image_decoder import ImageDecoder
-
 class ImageLoggingService:
-    def __init__(self):
-        configurator = EnvConfiguratorReader()
-        self.__configuration = configurator.read()
-        self.__rabbitmq_client = RabbitMQClient(self.__configuration)
-        self.__image_saver = FolderImageSaver(self.__configuration)
-        self.__image_decoder = ImageDecoder()
+    """
+    Сервис для получения изображений из RabbitMQ, декодирования, обработки и сохранения их в указанную папку.
+
+    Этот класс:
+    - Читает конфигурацию из среды (EnvConfiguratorReader).
+    - Устанавливает соединение с RabbitMQ для получения изображений.
+    - Использует декодер для обработки изображений.
+    - Сохраняет декодированные изображения на диск.
+    """
+    
+    def __init__(self, rabbitmq_client, image_saver, image_decoder):
+        """
+        Инициализация сервиса.
+        
+        Создает экземпляры для:
+        - Чтения конфигурации.
+        - Работы с RabbitMQ.
+        - Сохранения изображений.
+        - Декодирования изображений.
+        """
+        self.__rabbitmq_client = rabbitmq_client
+        self.__image_saver = image_saver
+        self.__image_decoder = image_decoder
         self._started = False
 
     def __callback(self, ch, method, properties, body):
+        """
+        Обрабатывает сообщение, полученное из RabbitMQ.
+
+        - Декодирует изображение.
+        - Выводит информацию о полученном изображении.
+        - Сохраняет изображение в заданную папку.
+        - Подтверждает или отклоняет сообщение в зависимости от результата.
+
+        Args:
+            ch: Канал RabbitMQ.
+            method: Метаданные сообщения.
+            properties: Свойства сообщения.
+            body: Содержимое сообщения (закодированное изображение).
+        """
         try:
             timestamp, camera_id, image = self.__image_decoder.decode_image(body)
 
@@ -34,6 +59,12 @@ class ImageLoggingService:
             ch.basic_nack(delivery_tag=method.delivery_tag)
 
     def start(self):
+        """
+        Запускает сервис.
+        
+        - Устанавливает соединение с RabbitMQ.
+        - Начинает получение сообщений через колбэк.
+        """
         if not self._started:
             try:
                 self.__rabbitmq_client.connect()
@@ -43,6 +74,12 @@ class ImageLoggingService:
                 print(f"Failed to start VideoLoggingService: [{ex}]")
 
     def stop(self):
+        """
+        Останавливает сервис.
+
+        - Завершает обработку сообщений из RabbitMQ.
+        - Закрывает соединение с RabbitMQ.
+        """
         if self._started:
             if not self._connection is None:
                 try:
