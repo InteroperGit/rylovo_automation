@@ -7,8 +7,6 @@ class VideoCaptureFactory:
     def create(self, configuration: Dict[str, str]) -> Capture:
         capture_type = configuration.get("video_capture_type")
         
-        print(f"CaptureType = {capture_type}")
-        
         if capture_type is None:
             raise ValueError("Video capture type must be an integer in range [0, 1]")
         
