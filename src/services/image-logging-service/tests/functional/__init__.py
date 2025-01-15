@@ -2,9 +2,15 @@ import os
 import sys
 
 # Определяем базовую директорию относительно текущего файла
-base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../.."))
+base_dir = os.path.abspath(os.path.join(os.path.dirname(__file__), "../../../../.."))
 
 # Добавляем необходимые пути
-sys.path.append(os.path.join(base_dir, 'tests/unit'))
-sys.path.append(os.path.join(base_dir, 'src'))
-sys.path.append(os.path.join(base_dir, 'libs', 'python'))
+paths = [
+    os.path.join(base_dir, 'src/services/image-logging-service/tests/functional'),
+    os.path.join(base_dir, 'src/services/image-logging-service/src'),
+    os.path.join(base_dir, 'src/libs/python')
+]
+
+for path in paths:
+    if path not in sys.path:
+        sys.path.append(path)
