@@ -1,3 +1,6 @@
 opencv-python
 pika
 dependency_injector
+pydantic
+fastapi
+uvicorn

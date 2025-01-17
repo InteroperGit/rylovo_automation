@@ -14,6 +14,8 @@ services:
       - ../../../../src/services/video-capture-service/.env
     volumes:
       - /mnt/e/korayzma/images/saved/defects:/images
+    ports:
+      - "8000:8000"
     depends_on:
       - rabbitmq
     networks:
@@ -31,6 +33,8 @@ services:
     volumes:
       #- ../../../../src/libs/python:/app/libs/python
       - /mnt/e/temp/rylovo_automation:/image_root_folder
+    ports:
+      - "8001:8000"
     depends_on:
       - rabbitmq
     networks:

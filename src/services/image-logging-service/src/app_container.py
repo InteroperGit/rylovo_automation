@@ -5,6 +5,7 @@ from rabbitmq.rabbitmq_client import RabbitMQClient
 from folder_image_saver import FolderImageSaver
 from image_decoder import ImageDecoder
 from image_logging_service import ImageLoggingService
+from image_logging_svc import ImageLoggingSvc
 
 class ApplicationContainer(containers.DeclarativeContainer):
     # Конфигуратор
@@ -22,3 +23,5 @@ class ApplicationContainer(containers.DeclarativeContainer):
         image_saver=image_saver,
         image_decoder=image_decoder
     )
+    
+    image_logging_svc = providers.Factory(ImageLoggingSvc)

@@ -69,9 +69,9 @@ class ImageLoggingService:
             try:
                 self.__rabbitmq_client.connect()
                 self.__rabbitmq_client.start_consuming(self.__callback)
-                print("VideoLoggingService was successfully started")
+                print("ImageLoggingService was successfully started")
             except Exception as ex:
-                print(f"Failed to start VideoLoggingService: [{ex}]")
+                print(f"Failed to start ImageLoggingService: [{ex}]")
 
     def stop(self):
         """
@@ -84,6 +84,6 @@ class ImageLoggingService:
             if not self._connection is None:
                 try:
                     self.__rabbitmq_client.stop_consuming()
-                    print("VideoLoggingService was successfully stopped")
+                    print("ImageLoggingService was successfully stopped")
                 except Exception as ex:
-                    print(f"Failed to stop VideoLoggingService: [{ex}]")
+                    print(f"Failed to stop ImageLoggingService: [{ex}]")

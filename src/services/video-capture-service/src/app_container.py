@@ -7,6 +7,7 @@ from rabbitmq.rabbitmq_client import RabbitMQClient
 from video_capture_factory import VideoCaptureFactory
 from image_handler import ImageHandler
 from video_capture_service import VideoCaptureService
+from video_capture_svc import VideoCaptureSvc
 
 class ApplicationContainer(containers.DeclarativeContainer):
     # Конфигуратор
@@ -35,3 +36,5 @@ class ApplicationContainer(containers.DeclarativeContainer):
         capture=capture,
         image_handler=image_handler
     )
+    
+    video_capture_svc = providers.Factory(VideoCaptureSvc)
