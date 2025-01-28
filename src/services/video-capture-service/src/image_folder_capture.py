@@ -28,7 +28,7 @@ class ImageFolderCapture(Capture):
         image_files = [file for file in files if file.lower().endswith(('.png', '.jpg', '.jpeg', '.bmp', '.tiff'))]
 
         if not image_files:
-            print("В директории нет изображений.")
+            print(f"В директории [{image_folder}] нет изображений.")
             return
         
         for image_file in image_files:

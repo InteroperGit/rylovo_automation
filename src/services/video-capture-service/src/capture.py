@@ -27,6 +27,9 @@ class Capture:
                 time.sleep(1)
                 image = next(gen)
                 self._event.notify(image)
+            except StopIteration:
+                print("Generator has no more items. Stopping the loop.")
+                break  # Прерываем цикл, когда генератор исчерпал все элементы
             except Exception as e:
                 print(f"Error: {e}")
                 
