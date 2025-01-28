@@ -31,7 +31,6 @@ services:
     env_file:
       - ../../../../src/services/image-logging-service/.env
     volumes:
-      #- ../../../../src/libs/python:/app/libs/python
       - /mnt/e/temp/rylovo_automation:/image_root_folder
     ports:
       - "8001:8000"
@@ -44,7 +43,7 @@ services:
 
   rabbitmq:
     image: rabbitmq:3-management
-    container_name: rabbitmq_container
+    container_name: rabbitmq-service
     ports:
      - "5672:5672"
      - "15672:15672"
