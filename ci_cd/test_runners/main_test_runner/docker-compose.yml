@@ -1,0 +1,16 @@
+version: "3.8"
+
+services:
+  test-runner:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      # Настраиваем образ на возможность запуска контейнеров на уровне хоста
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ${HOST_SRC_PATH}:/app/src
+      - ${HOST_TESTS_PATH}:/app/tests
+      - /tmp/tests:/tmp
+    environment:
+      # Чтобы логи сразу выводились
+      - PYTHONBUFFERED=1
