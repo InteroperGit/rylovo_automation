@@ -1,0 +1,64 @@
+version: '3.9'
+
+networks:
+  public_network:
+    driver: bridge
+
+services:
+  video-capture-service:
+    build:
+      context: ../../../src/services/video-capture-service
+      dockerfile: Dockerfile
+    container_name: video_capture_container
+    environment:
+      - VIDEO_CAPTURE_TYPE=1
+      - IMAGE_SOURCE_FOLDER=/images
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_QUEUE_NAME=image_queue
+      - RABBITMQ_EXCHNAGE_NAME=image_exchange
+      - RABBITMQ_MAX_CONNECTION_ATTEMPTS=10
+    volumes:
+      - /tmp/tests/input:/images
+    networks:
+      - public_network
+    depends_on:
+      - rabbitmq
+
+  image-logging-service:
+    build:
+      context: ../../../src/services/image-logging-service
+      dockerfile: Dockerfile
+    container_name: image_logging_container
+    environment:
+      - IMAGE_SAVE_ROOT_FOLDER=/images
+      - RABBITMQ_HOST=rabbitmq
+      - RABBITMQ_USER=guest
+      - RABBITMQ_PASSWORD=guest
+      - RABBITMQ_QUEUE_NAME=image_queue
+      - RABBITMQ_EXCHNAGE_NAME=image_exchange
+      - RABBITMQ_MAX_CONNECTION_ATTEMPTS=10
+    volumes:
+      - /tmp/tests/output:/images
+    networks:
+      - public_network
+    depends_on:
+      - rabbitmq
+
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq_container
+    ports:
+     - "5672:5672"
+     - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: guest
+      RABBITMQ_DEFAULT_PASS: guest
+    healthcheck:
+      test: ["CMD", "nc", "-z", "rabbitmq", "5672"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    networks:
+      - public_network   # Публичная сеть для доступа к веб-интерфейсу
