@@ -22,7 +22,7 @@ class RabbitMQClient:
         
         while attempts < connection_max_attempts:
             try:
-                print(f"Try to connect to RabbitMQ server: {rabbitmq_host}. Attempt: [{attempts}]")
+                print(f"Try to connect to RabbitMQ server: [{rabbitmq_host}]. Attempt: [{attempts}]")
                 self.__connection = pika.BlockingConnection(pika.ConnectionParameters(host=rabbitmq_host, credentials=credentials))
                 print("RabbitMQ. Connection established")
                 break
@@ -55,7 +55,7 @@ class RabbitMQClient:
         rabbitmq_exchange_name = config.get("rabbitmq_exchange_name")
         
         # Инициализация подключения
-        print(f"Try to connect to RabbitMQ server: {rabbitmq_host} with credentials: {rabbitmq_user}:{rabbitmq_password}")
+        print(f"Try to connect to RabbitMQ server: [{rabbitmq_host}] with credentials: [{rabbitmq_user}:{rabbitmq_password}]\n")
         self.__try_to_connect()
                 
         if self.__connection is None:
